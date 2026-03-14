@@ -1,6 +1,6 @@
 # interoperability-ffi-wasm-node
 
-# Create from Scratch
+# Create new project
 - mkdir interoperability-ffi-wasm-node
 - cd interoperability-ffi-wasm-node
 - npm init -y
