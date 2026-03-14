@@ -11,6 +11,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@aiamitsuri/interoperability-ffi-wasm": "^0.1.9"
+    "@aiamitsuri/interoperability-ffi-wasm": "^0.1.14"
   }
 }
