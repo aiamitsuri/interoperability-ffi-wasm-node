@@ -4,7 +4,7 @@
 - mkdir interoperability-ffi-wasm-node
 - cd interoperability-ffi-wasm-node
 - npm init -y
-- npm install @aiamitsuri/interoperability-ffi-wasm@0.1.14
+- npm install @aiamitsuri/interoperability-ffi-wasm@0.1.15
 - type nul >test.js
 
 # Run existing project
