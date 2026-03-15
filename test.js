@@ -1,39 +1,43 @@
-const { fetch_from_js } = require("@aiamitsuri/interoperability-ffi-wasm");
+const wasm = require("@aiamitsuri/interoperability-ffi-wasm");
 
-async function deepSearch() {
-    console.log("🚀 Starting Deep Wasm Test...");
+async function deepSearch(pageNumber = 1) {
+    console.log(`🚀 Starting Deep Wasm Test (Page: ${pageNumber})...`);
     
     const params = {
-        // language: "node",
-        // integration: "done",
-        // crates: "wasm",
-        // developmentkit: "app",
-        // page: "1",
-		// ids: null,
-		// ids: [1].join(","),
-		ids: [1, 3, 4].join(",")
+        language: null,
+        integration: null,
+        crates: null,
+        developmentkit: null,
+        page: pageNumber.toString(),
+        ids: null
     };
 
     try {
-        const result = await fetch_from_js(params);
 
-        // 1. Use Optional Chaining (?.) to prevent "TypeError: Cannot read properties of undefined"
-        // 2. Use Nullish Coalescing (??) to default to 0 if pagination is missing
-        const totalItems = result?.pagination?.total_items ?? 0;
+        if (wasm.default) await wasm.default();
+
+        const result = await wasm.fetch_from_js(params);
+
+        const pagination = result?.pagination;
+        const totalItems = pagination?.total_items ?? 0;
+        const currentPage = pagination?.current_page ?? pageNumber;
+        const totalPages = pagination?.total_pages ?? 1;
 
         if (totalItems > 0) {
-            console.log(`✅ Success! Found ${totalItems} items.`);
-            console.dir(result, { depth: null });
+            console.log(`✅ Success! [Page ${currentPage}/${totalPages}] Found ${totalItems} items total.`);
+            console.dir(result, { depth: null, colors: true });
+
+            if (pagination?.next_page_url) {
+                console.log(`\n💡 Pro-tip: Run deepSearch(${currentPage + 1}) to see more.`);
+            }
         } else {
-            // This handles the "No match found" case gracefully
             console.warn("⚠️ No items found matching those specific criteria.");
             console.log("Full Response:", result); 
         }
 
     } catch (err) {
-        // This handles actual WASM execution crashes (e.g., memory issues or invalid types)
-        console.error("❌ Wasm Execution Error:", err.message);
+        console.error("❌ Wasm Execution Error:", err.toString());
     }
 }
 
-deepSearch();
+deepSearch(1);
